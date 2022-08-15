@@ -29,7 +29,7 @@ public class PublisherController {
     public String publishMessageFanout(@RequestBody CustomerMessageDao customerMessageDao){
         customerMessageDao.setMessageId(UUID.randomUUID().toString());
         customerMessageDao.setMessageDate(new Date());
-        rabbitTemplate.convertAndSend(MessageConfig.FANOUTEXCHANGE, customerMessageDao);
+        rabbitTemplate.convertAndSend(MessageConfig.FANOUTEXCHANGE, null, customerMessageDao);
         return "Mesaj Yayınlandı : FanoutExchange";
     }
 

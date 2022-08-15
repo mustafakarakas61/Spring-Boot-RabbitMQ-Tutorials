@@ -12,14 +12,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessageConfig {
     //-------------------------------------------------------------------Queues Variables
-    public static final String QUEUE1 = "mustafa_queue1";
-    public static final String QUEUE2 = "mustafa_queue2";
-    public static final String QUEUE3 = "mustafa_queue3";
+    public static final String QUEUE1 = "mustafa_direct_queue1";
+    public static final String QUEUE2 = "mustafa_fanout_queue2";
+    public static final String QUEUE3 = "mustafa_topic_queue3";
 
     //-------------------------------------------------------------------Exchanges Variables
     public static final String DIRECTEXCHANGE = "mustafa.direct";
     public static final String FANOUTEXCHANGE = "mustafa.fanout";
     public static final String TOPICEXCHANGE = "mustafa.topic";
+
+    //-------------------------------------------------------------------RoutingKeys Variables
     public static final String ROUTINGKEY_DIRECT = "routingKeyDirect";
     public static final String ROUTINGKEY_TOPIC = "routingKeyTopic";
 
