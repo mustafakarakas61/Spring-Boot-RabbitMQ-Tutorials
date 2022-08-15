@@ -1,7 +1,7 @@
 package com.mustafa.publisher.controller;
 
 import com.mustafa.publisher.config.MessageConfig;
-import com.mustafa.publisher.dao.CustomerMessageDao;
+import com.mustafa.publisher.dto.CustomerMessageDao;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
