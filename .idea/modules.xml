@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/Spring-Boot-RabbitMQ-Tutorials.iml" filepath="$PROJECT_DIR$/.idea/Spring-Boot-RabbitMQ-Tutorials.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-rabbitmq-3/consumer/consumer.iml" filepath="$PROJECT_DIR$/springboot-rabbitmq-3/consumer/consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-rabbitmq-3/publisher/publisher.iml" filepath="$PROJECT_DIR$/springboot-rabbitmq-3/publisher/publisher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot-rabbitmq-4/rabbitmq.iml" filepath="$PROJECT_DIR$/springboot-rabbitmq-4/rabbitmq.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-rabbitmq-2/spring-rabbitmq-consumer/spring-rabbitmq-consumer.iml" filepath="$PROJECT_DIR$/springboot-rabbitmq-2/spring-rabbitmq-consumer/spring-rabbitmq-consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-rabbitmq-2/spring-rabbitmq-producer/spring-rabbitmq-producer.iml" filepath="$PROJECT_DIR$/springboot-rabbitmq-2/spring-rabbitmq-producer/spring-rabbitmq-producer.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-rabbitmq-1/springboot-rabbitmq.iml" filepath="$PROJECT_DIR$/springboot-rabbitmq-1/springboot-rabbitmq.iml" />

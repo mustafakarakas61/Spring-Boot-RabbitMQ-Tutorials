@@ -13,5 +13,7 @@
     <file url="file://$PROJECT_DIR$/springboot-rabbitmq-3/consumer2/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springboot-rabbitmq-3/publisher/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springboot-rabbitmq-3/publisher/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springboot-rabbitmq-4/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springboot-rabbitmq-4/src/main/resources" charset="UTF-8" />
   </component>
 </project>

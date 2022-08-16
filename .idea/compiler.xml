@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="springboot-rabbitmq" />
         <module name="publisher" />
+        <module name="rabbitmq" />
         <module name="consumer" />
         <module name="spring-rabbitmq-consumer" />
         <module name="spring-rabbitmq-producer" />
@@ -19,6 +20,7 @@
       <module name="consumer (1)" target="11" />
       <module name="consumer2" target="11" />
       <module name="publisher" target="11" />
+      <module name="rabbitmq" target="11" />
       <module name="spring-rabbitmq-consumer" target="11" />
       <module name="spring-rabbitmq-producer" target="11" />
       <module name="springboot-rabbitmq" target="11" />
@@ -30,6 +32,7 @@
       <module name="consumer (1)" options="-parameters" />
       <module name="consumer2" options="-parameters" />
       <module name="publisher" options="-parameters" />
+      <module name="rabbitmq" options="-parameters" />
       <module name="spring-rabbitmq-consumer" options="-parameters" />
       <module name="spring-rabbitmq-producer" options="-parameters" />
       <module name="springboot-rabbitmq" options="-parameters" />
