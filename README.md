@@ -1,5 +1,6 @@
 # Getting Started
 * [Source](https://codedestine.com/rabbitmq-direct-exchange/)
+
 ![](https://codedestine.com/wp-content/uploads/2016/09/DirectExchange_2.png)
 
 ### Reference Documentation
