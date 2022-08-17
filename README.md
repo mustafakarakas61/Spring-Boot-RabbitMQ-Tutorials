@@ -1,6 +1,6 @@
 # Getting Started
 * [Source](https://codedestine.com/rabbitmq-direct-exchange/)
-![](../../../../../Users/M7F4D~1.KAR/AppData/Local/Temp/DirectExchange_2.png)
+![](https://codedestine.com/wp-content/uploads/2016/09/DirectExchange_2.png)
 
 ### Reference Documentation
 For further reference, please consider the following sections:
