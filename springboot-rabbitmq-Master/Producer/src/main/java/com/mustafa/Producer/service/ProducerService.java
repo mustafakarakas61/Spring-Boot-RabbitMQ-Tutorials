@@ -127,13 +127,7 @@ public class ProducerService {
     }
 
     /*
-    todo : RabbitMQ'de mevcut olan queue'leri silebilirsin istersen, karmaşıklık oluşturmasın.
-
-    todo : queue ve exchange için ayrı PostMapping oluştur. Producer buradan da queue veya exchange oluşturabilsin
-    todo : apiProducer/producer2'deki queue ve routing_key'leri için kullanıcı oradan oluşturmasın. Kullanıcı oradan var olan queue ve routing_key'i yazarak mesajını Consumer'e iletsin
-    todo : ProducerController'deki /apiProducer RequesMapping'deki slaşı kaldır ve bu işlemi CustomerController için de yap
     todo : Var olan queue'leri ve routing_key'leri yakalayıp diziye aktarabiliyor musun? Eğer yapılabiliyorsa kullanıcı bunlar arasından swagger üzerinden seçsin. Bu işlem kullanıcıya kolaylık sağlayacaktır.
-
     todo : Kullanıcı EXCHANGE tipini seçebilsin. Direct-Fanout-Topic-Headers. Belki bunu swagger üzerinden 1-2-3-4 gibi id numaralandırmasıyla yapılabilir.
      */
     //---------------------------------------------------------------------Connection Config

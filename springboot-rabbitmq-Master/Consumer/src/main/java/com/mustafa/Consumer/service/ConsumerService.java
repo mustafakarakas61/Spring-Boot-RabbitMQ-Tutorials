@@ -11,6 +11,9 @@ import java.util.concurrent.TimeoutException;
 public class ConsumerService {
 
     //-----------------------------------------------------------Variables
+    /*
+    todo : Burada Geliştirme Yapılacak
+     */
     public static String QUEUE_NAME_1 = "direct-queue-1";
     public static String QUEUE_NAME_2 = "direct-queue-2";
     public static String QUEUE_NAME_3 = "direct-queue-3";
