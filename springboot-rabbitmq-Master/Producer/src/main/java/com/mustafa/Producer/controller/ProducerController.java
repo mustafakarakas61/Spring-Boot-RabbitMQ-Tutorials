@@ -5,6 +5,7 @@ import com.mustafa.Producer.service.ProducerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.Selection;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeoutException;
 
 
 @RestController
-@RequestMapping("/apiProducer")
+@RequestMapping("/")
 public class ProducerController {
 
     ProducerService producerService;
@@ -21,27 +22,62 @@ public class ProducerController {
     public ProducerController(ProducerService producerService) {
         this.producerService = producerService;
     }
-
-    @PostMapping("/createExchangeAndQueue")
-    @ApiOperation("direct-exchange ve Queue(1-2-3)'leri yayına geçirmek için çalıştırın")
+/*
+    @PostMapping("createExchangeAndQueue")
+    @ApiOperation("direct-exchange ve Queue(1-2-3)'leri yayına geçirmek için")
     public void createExchangeAndQueue() throws IOException, TimeoutException {
         producerService.createExchangeAndQueue();
     }
-
-    @PostMapping("/producer")
+*/
+    /*
+    @PostMapping("producer")
     @ApiOperation("Start the producers(1-2-3) and send the messages(1-2-3)[bind queue(1-2-3) to directExchange with routing_keys(1-2-3)]")
     public void producer() throws IOException, TimeoutException {
         producerService.publish();
     }
-
-    @PostMapping("/producer2")
+*/
+    /*
+    @PostMapping("producer2")
     @ApiOperation("Bir mesaj yazın, queue'yi ve Routing_Key'inizi belirtin. İsteği gönderdiğinizde yayına geçecektir.")
     public void producer2(@RequestParam String message, @RequestParam String routing_key, @RequestParam String queue) throws IOException, TimeoutException {
         producerService.publish(message, routing_key);
         producerService.createExchangeAndQueueUser(queue, routing_key);
     }
+    */
 
 
+    @PostMapping("sendMessage")
+    @ApiOperation("Bir routing_key oluşturun. RabbitMQ'de mevcut olan Queue ve Exchange'i belirtip oluşturduğunuz routing_key ile mesajınızı gönderin !")
+    public String sendMessage(@RequestParam String message, @RequestParam String queueName, @RequestParam String routing_keyName, @RequestParam() String exchangeName) throws IOException, TimeoutException {
+
+        producerService.sendMessage(message, queueName, routing_keyName, exchangeName);
+
+        return "Mesajınız Kuyruğa Eklendi !";
+    }
+
+    @PostMapping("createQueue")
+    @ApiOperation("Bir kuyruk oluşturmak için")
+    public void createQueue(@RequestParam String queueName) throws IOException, TimeoutException {
+        producerService.createQueue(queueName);
+    }
+
+    @PostMapping("createExchange")
+    @ApiOperation("Bir exchange tipi oluşturmak için: DirectExchange=D or d, FanoutExchange=F or f, HeaderChange=H or h, TopicExchange=T or t")
+    public void createExchange(String exchangeName, char c) throws IOException, TimeoutException {
+
+        if (c == 'D' || c == 'd') {
+            producerService.createExchangeDirect(exchangeName);
+        }
+        if (c == 'F' || c == 'f') {
+            producerService.createExchangeFanout(exchangeName);
+        }
+        if (c == 'H' || c == 'h') {
+            producerService.createExchangeHeader(exchangeName);
+        }
+        if (c == 'T' || c == 't') {
+            producerService.createExchangeTopic(exchangeName);
+        }
+    }
 
 
 }

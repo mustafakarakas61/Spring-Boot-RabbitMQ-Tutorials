@@ -13,6 +13,7 @@ import java.util.concurrent.TimeoutException;
 public class ProducerService {
     //---------------------------------------------------------------------Variables
     private Connection connection;
+    private Channel channel;
 
     public static String EXCHANGE_NAME_DIRECT = "direct-exchange";
 
@@ -35,7 +36,7 @@ public class ProducerService {
         connection = ProducerService.getConnection();
 
         if (connection != null) {
-            Channel channel = connection.createChannel();
+            channel = connection.createChannel();
             channel.exchangeDeclare(EXCHANGE_NAME_DIRECT, ExchangeType.DIRECT.getExchangeName(), true);
 
             //First Queue
@@ -66,7 +67,7 @@ public class ProducerService {
         connection = ProducerService.getConnection();
 
         if (connection != null) {
-            Channel channel = connection.createChannel();
+            channel = connection.createChannel();
 
             //First message sent by using ROUTING_KEY_1
             channel.basicPublish(ProducerService.EXCHANGE_NAME_DIRECT, ProducerService.ROUTING_KEY_1, null, MESSAGE_1.getBytes());
@@ -93,7 +94,7 @@ public class ProducerService {
         connection = ProducerService.getConnection();
 
         if (connection != null) {
-            Channel channel = connection.createChannel();
+            channel = connection.createChannel();
             //ExchangeType
             channel.exchangeDeclare(EXCHANGE_NAME_DIRECT, ExchangeType.DIRECT.getExchangeName(), true);
 
@@ -112,7 +113,7 @@ public class ProducerService {
         connection = ProducerService.getConnection();
 
         if (connection != null) {
-            Channel channel = connection.createChannel();
+            channel = connection.createChannel();
 
             //User's message sent by using user's routing_key
             channel.basicPublish(ProducerService.EXCHANGE_NAME_DIRECT, routing_key, null, message.getBytes());
@@ -128,7 +129,7 @@ public class ProducerService {
     /*
     todo : RabbitMQ'de mevcut olan queue'leri silebilirsin istersen, karmaşıklık oluşturmasın.
 
-    todo : queue ve routing_key için ayrı PostMapping oluştur. Producer buradan da queue veya routing_key oluşturabilsin
+    todo : queue ve exchange için ayrı PostMapping oluştur. Producer buradan da queue veya exchange oluşturabilsin
     todo : apiProducer/producer2'deki queue ve routing_key'leri için kullanıcı oradan oluşturmasın. Kullanıcı oradan var olan queue ve routing_key'i yazarak mesajını Consumer'e iletsin
     todo : ProducerController'deki /apiProducer RequesMapping'deki slaşı kaldır ve bu işlemi CustomerController için de yap
     todo : Var olan queue'leri ve routing_key'leri yakalayıp diziye aktarabiliyor musun? Eğer yapılabiliyorsa kullanıcı bunlar arasından swagger üzerinden seçsin. Bu işlem kullanıcıya kolaylık sağlayacaktır.
@@ -150,6 +151,76 @@ public class ProducerService {
         connection = factory.newConnection();
         return connection;
 
+    }
+
+    public void sendMessage(String message,String queueName, String routing_KeyName, String exchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+        channel = connection.createChannel();
+
+        if(connection != null) {
+            channel.queueBind(queueName, exchangeName, routing_KeyName);
+            channel.basicPublish(exchangeName,routing_KeyName,null,message.getBytes());
+            channel.close();
+            connection.close();
+        }
+    }
+
+
+    //---------------------------------------------------------------------Create Queue
+    public void createQueue(String queueName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+        channel = connection.createChannel();
+
+        if (connection != null) {
+            channel.queueDeclare(queueName, true, false, false, null);
+            channel.close();
+            connection.close();
+        }
+    }
+
+    //---------------------------------------------------------------------Create Exchange
+    public void createExchangeDirect(String exchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+        channel = connection.createChannel();
+
+        if (connection != null) {
+            channel.exchangeDeclare(exchangeName, ExchangeType.DIRECT.getExchangeName(), true);
+            channel.close();
+            connection.close();
+        }
+    }
+
+    public void createExchangeFanout(String exchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+        channel = connection.createChannel();
+
+        if (connection != null) {
+            channel.exchangeDeclare(exchangeName, ExchangeType.FANOUT.getExchangeName(), true);
+            channel.close();
+            connection.close();
+        }
+    }
+
+    public void createExchangeHeader(String exchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+        channel = connection.createChannel();
+
+        if (connection != null) {
+            channel.exchangeDeclare(exchangeName, ExchangeType.HEADER.getExchangeName(), true);
+            channel.close();
+            connection.close();
+        }
+    }
+
+    public void createExchangeTopic(String exchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+        channel = connection.createChannel();
+
+        if (connection != null) {
+            channel.exchangeDeclare(exchangeName, ExchangeType.TOPIC.getExchangeName(), true);
+            channel.close();
+            connection.close();
+        }
     }
 
 }

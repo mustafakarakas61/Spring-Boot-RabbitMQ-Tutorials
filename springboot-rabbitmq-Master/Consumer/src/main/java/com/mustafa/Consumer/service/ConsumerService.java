@@ -10,11 +10,12 @@ import java.util.concurrent.TimeoutException;
 @Service
 public class ConsumerService {
 
+    //-----------------------------------------------------------Variables
     public static String QUEUE_NAME_1 = "direct-queue-1";
     public static String QUEUE_NAME_2 = "direct-queue-2";
     public static String QUEUE_NAME_3 = "direct-queue-3";
 
-
+    //-----------------------------------------------------------Methods
     public void receive() throws IOException, TimeoutException {
 
         Connection connection = ConsumerService.getConnection();
@@ -58,6 +59,7 @@ public class ConsumerService {
 
     }
 
+    //-----------------------------------------------------------Connection Method
     public static Connection getConnection() throws IOException, TimeoutException {
 
         Connection connection;
