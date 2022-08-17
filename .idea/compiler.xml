@@ -7,6 +7,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Producer (1)" />
+        <module name="Consumer (1)" />
         <module name="Producer" />
         <module name="Consumer" />
         <module name="spring-rabbitmq-consumer" />
@@ -20,9 +22,11 @@
     <bytecodeTargetLevel>
       <module name="Consumer" target="11" />
       <module name="consumer" target="11" />
+      <module name="Consumer (1)" target="11" />
       <module name="consumer (1)" target="11" />
       <module name="consumer2" target="11" />
       <module name="Producer" target="11" />
+      <module name="Producer (1)" target="11" />
       <module name="publisher" target="11" />
       <module name="rabbitmq" target="11" />
       <module name="spring-rabbitmq-consumer" target="11" />
@@ -33,7 +37,9 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Consumer" options="-parameters" />
+      <module name="Consumer (1)" options="-parameters" />
       <module name="Producer" options="-parameters" />
+      <module name="Producer (1)" options="-parameters" />
       <module name="consumer" options="-parameters" />
       <module name="consumer (1)" options="-parameters" />
       <module name="consumer2" options="-parameters" />
