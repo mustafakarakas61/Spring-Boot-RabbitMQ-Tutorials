@@ -4,11 +4,10 @@ import com.rabbitmq.client.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.concurrent.TimeoutException;
 
 @Service
-public class ConsumerService {
+public class DirectConsumerService {
 
     //-----------------------------------------------------------Variables
     /*
@@ -27,7 +26,7 @@ public class ConsumerService {
     //-----------------------------------------------------------Methods for consumer[1,2,3]
     public void receive() throws IOException, TimeoutException {
 
-        connection = ConsumerService.getConnection();
+        connection = DirectConsumerService.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -71,7 +70,7 @@ public class ConsumerService {
 
     public String startConsumerForThisQueue(String queueName) throws IOException, TimeoutException {
 
-        connection = ConsumerService.getConnection();
+        connection = DirectConsumerService.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -92,7 +91,7 @@ public class ConsumerService {
 
     //"direct-queue" kuyruğu mevcut olmalıdır. Sadece o kuyruğa atılan mesajları çekecek.
     public void receiveConsumer() throws IOException, TimeoutException{
-        connection = ConsumerService.getConnection();
+        connection = DirectConsumerService.getConnection();
 
         if(connection != null){
             channel = connection.createChannel();

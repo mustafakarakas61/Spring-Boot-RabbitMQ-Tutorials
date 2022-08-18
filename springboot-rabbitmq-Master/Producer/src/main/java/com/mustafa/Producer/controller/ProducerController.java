@@ -2,10 +2,8 @@ package com.mustafa.Producer.controller;
 
 import com.mustafa.Producer.service.ProducerService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.Selection;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -46,14 +44,22 @@ public class ProducerController {
     */
 
 
-    @PostMapping("sendMessage")
-    @ApiOperation("Bir routing_key oluşturun. RabbitMQ'de mevcut olan Queue ve Exchange'i belirtip oluşturduğunuz routing_key ile mesajınızı gönderin !")
-    public String sendMessage(@RequestParam String message, @RequestParam String queueName, @RequestParam String routing_keyName, @RequestParam() String exchangeName) throws IOException, TimeoutException {
+    @PostMapping("sendMessageForDirect")
+    public String sendMessage(@RequestParam String newMessage, @RequestParam String newRoutingKeyName, @RequestParam() String existExchangeName) throws IOException, TimeoutException {
 
-        producerService.sendMessage(message, queueName, routing_keyName, exchangeName);
+        producerService.sendMessage(newMessage, newRoutingKeyName, existExchangeName);
 
         return "Mesajınız Kuyruğa Eklendi !";
     }
+
+    @PostMapping("sendMessageForFanout")
+    public String sendMessage(@RequestParam String newMessage, @RequestParam() String existExchangeName) throws IOException, TimeoutException {
+
+        producerService.sendMessage(newMessage, existExchangeName);
+
+        return "Mesajınız Kuyruğa Eklendi !";
+    }
+
 
     @PostMapping("createQueue")
     @ApiOperation("Bir kuyruk oluşturmak için")
@@ -61,9 +67,21 @@ public class ProducerController {
         producerService.createQueue(queueName);
     }
 
+    @PostMapping("createQueueWithBind")
+    public void createQueue(@RequestParam String queueName,@RequestParam String existExchangeName,@RequestParam String routingKeyName) throws IOException, TimeoutException {
+        producerService.createQueue(queueName, existExchangeName, routingKeyName);
+    }
+
+    @PostMapping("createQueueWithOnlyExchange")
+    public void createQueue(@RequestParam String queueName,@RequestParam String existExchangeName) throws IOException, TimeoutException {
+        producerService.createQueue(queueName, existExchangeName);
+    }
+
+
+
     @PostMapping("createExchange")
     @ApiOperation("Bir exchange tipi oluşturmak için: DirectExchange=D or d, FanoutExchange=F or f, HeaderChange=H or h, TopicExchange=T or t")
-    public void createExchange(String exchangeName, char c) throws IOException, TimeoutException {
+    public void createExchange(@RequestParam String exchangeName,@RequestParam char c) throws IOException, TimeoutException {
 
         if (c == 'D' || c == 'd') {
             producerService.createExchangeDirect(exchangeName);

@@ -37,8 +37,11 @@ public class ProducerService {
 
         if (connection != null) {
             channel = connection.createChannel();
+
+            //Create Exchange
             channel.exchangeDeclare(EXCHANGE_NAME_DIRECT, ExchangeType.DIRECT.getExchangeName(), true);
 
+            //Create Queue
             //First Queue
             channel.queueDeclare(QUEUE_NAME_1, true, false, false, null);
             channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME_DIRECT, ROUTING_KEY_1);
@@ -87,28 +90,6 @@ public class ProducerService {
 
     }
 
-
-    //-------------------------------------------------------createEXCHANGEandQUEUE and PUBLISH METHOD for ■USER■
-    public void createExchangeAndQueueUser(String queue, String routing_key) throws IOException, TimeoutException {
-
-        connection = ProducerService.getConnection();
-
-        if (connection != null) {
-            channel = connection.createChannel();
-            //ExchangeType
-            channel.exchangeDeclare(EXCHANGE_NAME_DIRECT, ExchangeType.DIRECT.getExchangeName(), true);
-
-            //Create user's queue with user's routing_key
-            channel.queueDeclare(queue, true, false, false, null);
-            channel.queueBind(queue, EXCHANGE_NAME_DIRECT, routing_key);
-
-            channel.close();
-            connection.close();
-
-        }
-
-    }
-
     public void publish(String message, String routing_key) throws IOException, TimeoutException {
         connection = ProducerService.getConnection();
 
@@ -147,13 +128,24 @@ public class ProducerService {
 
     }
 
-    public void sendMessage(String message,String queueName, String routing_KeyName, String exchangeName) throws IOException, TimeoutException {
+    public void sendMessage(String newMessage, String newRoutingKeyName, String existExchangeName) throws IOException, TimeoutException {
         connection = ProducerService.getConnection();
-        channel = connection.createChannel();
 
-        if(connection != null) {
-            channel.queueBind(queueName, exchangeName, routing_KeyName);
-            channel.basicPublish(exchangeName,routing_KeyName,null,message.getBytes());
+
+        if (connection != null) {
+            channel = connection.createChannel();
+            channel.basicPublish(existExchangeName, newRoutingKeyName, null, newMessage.getBytes());
+            channel.close();
+            connection.close();
+        }
+    }
+    public void sendMessage(String newMessage, String existExchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+
+
+        if (connection != null) {
+            channel = connection.createChannel();
+            channel.basicPublish(existExchangeName, "", null, newMessage.getBytes());
             channel.close();
             connection.close();
         }
@@ -163,58 +155,91 @@ public class ProducerService {
     //---------------------------------------------------------------------Create Queue
     public void createQueue(String queueName) throws IOException, TimeoutException {
         connection = ProducerService.getConnection();
-        channel = connection.createChannel();
+
 
         if (connection != null) {
+            channel = connection.createChannel();
             channel.queueDeclare(queueName, true, false, false, null);
             channel.close();
             connection.close();
         }
     }
 
-    //---------------------------------------------------------------------Create Exchange
-    public void createExchangeDirect(String exchangeName) throws IOException, TimeoutException {
+    public void createQueue(String queueName, String existExchangeName, String routingKeyName) throws IOException, TimeoutException {
         connection = ProducerService.getConnection();
-        channel = connection.createChannel();
 
         if (connection != null) {
-            channel.exchangeDeclare(exchangeName, ExchangeType.DIRECT.getExchangeName(), true);
+            channel = connection.createChannel();
+
+            channel.queueDeclare(queueName, true, false, false, null);//create queue - Kuyruk üret
+            channel.queueBind(queueName, existExchangeName, routingKeyName);      //bind queue to exchange with RK-RB - Varolan-üretilen kuyruğu varolan exchange tipine RK-RB ile bağla-bind et
+
+            channel.close();
+            connection.close();
+        }
+    }
+//Burada kuyruk sadece exchange'e bağlanıyor-bind ediliyor
+    public void createQueue(String queueName, String existExchangeName) throws IOException, TimeoutException {
+        connection = ProducerService.getConnection();
+
+        if (connection != null) {
+            channel = connection.createChannel();
+
+            channel.queueDeclare(queueName, true, false, false, null);//create queue - Kuyruk üret
+            channel.queueBind(queueName, existExchangeName,"");      //bind queue to exchange with RK-RB - Varolan-üretilen kuyruğu varolan exchange tipine RK-RB ile bağla-bind et
+
             channel.close();
             connection.close();
         }
     }
 
-    public void createExchangeFanout(String exchangeName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
-        channel = connection.createChannel();
+        //---------------------------------------------------------------------Create Exchange
+        public void createExchangeDirect (String exchangeName) throws IOException, TimeoutException {
+            connection = ProducerService.getConnection();
 
-        if (connection != null) {
-            channel.exchangeDeclare(exchangeName, ExchangeType.FANOUT.getExchangeName(), true);
-            channel.close();
-            connection.close();
+
+            if (connection != null) {
+                channel = connection.createChannel();
+                channel.exchangeDeclare(exchangeName, ExchangeType.DIRECT.getExchangeName(), true);
+                channel.close();
+                connection.close();
+            }
         }
-    }
 
-    public void createExchangeHeader(String exchangeName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
-        channel = connection.createChannel();
+        public void createExchangeFanout (String exchangeName) throws IOException, TimeoutException {
+            connection = ProducerService.getConnection();
 
-        if (connection != null) {
-            channel.exchangeDeclare(exchangeName, ExchangeType.HEADER.getExchangeName(), true);
-            channel.close();
-            connection.close();
+
+            if (connection != null) {
+                channel = connection.createChannel();
+                channel.exchangeDeclare(exchangeName, ExchangeType.FANOUT.getExchangeName(), true);
+                channel.close();
+                connection.close();
+            }
         }
-    }
 
-    public void createExchangeTopic(String exchangeName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
-        channel = connection.createChannel();
+        public void createExchangeHeader (String exchangeName) throws IOException, TimeoutException {
+            connection = ProducerService.getConnection();
 
-        if (connection != null) {
-            channel.exchangeDeclare(exchangeName, ExchangeType.TOPIC.getExchangeName(), true);
-            channel.close();
-            connection.close();
+
+            if (connection != null) {
+                channel = connection.createChannel();
+                channel.exchangeDeclare(exchangeName, ExchangeType.HEADER.getExchangeName(), true);
+                channel.close();
+                connection.close();
+            }
         }
-    }
+
+        public void createExchangeTopic (String exchangeName) throws IOException, TimeoutException {
+            connection = ProducerService.getConnection();
+
+
+            if (connection != null) {
+                channel = connection.createChannel();
+                channel.exchangeDeclare(exchangeName, ExchangeType.TOPIC.getExchangeName(), true);
+                channel.close();
+                connection.close();
+            }
+        }
 
 }

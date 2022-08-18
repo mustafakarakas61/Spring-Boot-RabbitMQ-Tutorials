@@ -1,6 +1,6 @@
 package com.mustafa.Consumer.controller;
 
-import com.mustafa.Consumer.service.ConsumerService;
+import com.mustafa.Consumer.service.DirectConsumerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +12,12 @@ import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping("/")
-public class ConsumerController {
+public class DirectConsumerController {
 
-    ConsumerService consumerService;
+    DirectConsumerService consumerService;
 
     @Autowired
-    public ConsumerController(ConsumerService consumerService) {
+    public DirectConsumerController(DirectConsumerService consumerService) {
         this.consumerService = consumerService;
     }
 
@@ -28,7 +28,7 @@ public class ConsumerController {
         consumerService.receive();
     }
     */
-    @GetMapping("receiver")
+    @GetMapping("directReceiver")
     @ApiOperation("Mesajı almak istediğiniz kuyruğun ismini girmelisiniz.")
     public String receiver(String queueName) throws IOException, TimeoutException {
 
