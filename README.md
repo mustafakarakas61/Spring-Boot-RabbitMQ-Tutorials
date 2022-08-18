@@ -1,7 +1,19 @@
 # Getting Started
-* [Source](https://codedestine.com/rabbitmq-direct-exchange/)
+* [Direct Exchange](https://codedestine.com/rabbitmq-direct-exchange/)
 
 ![](https://codedestine.com/wp-content/uploads/2016/09/DirectExchange_2.png)
+
+* [Fanout Exchange](https://codedestine.com/rabbitmq-fanout-exchange/)
+
+![](https://codedestine.com/wp-content/uploads/2016/09/FanoutExchange_3.png)
+
+* [Topic Exchange](https://codedestine.com/rabbitmq-topic-exchange/)
+
+![](https://codedestine.com/wp-content/uploads/2016/09/TopicExchange.png)
+
+* [Headers Exchange](https://codedestine.com/rabbitmq-headers-exchange/)
+
+![](https://codedestine.com/wp-content/uploads/2016/09/HeadersExchange.png)
 
 ### Reference Documentation
 For further reference, please consider the following sections:

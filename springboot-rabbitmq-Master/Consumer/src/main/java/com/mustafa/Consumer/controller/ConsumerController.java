@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("/apiConsumer")
+@RequestMapping("/")
 public class ConsumerController {
 
     ConsumerService consumerService;
@@ -21,12 +21,19 @@ public class ConsumerController {
         this.consumerService = consumerService;
     }
 
-    @GetMapping("/receiver")
+    /*
+    @GetMapping("receiver")
     @ApiOperation("Start the consumers(1-2-3)")
     public void receiver() throws IOException, TimeoutException {
         consumerService.receive();
     }
+    */
+    @GetMapping("receiver")
+    @ApiOperation("Mesajı almak istediğiniz kuyruğun ismini girmelisiniz.")
+    public String receiver(String queueName) throws IOException, TimeoutException {
 
+        return consumerService.startConsumerForThisQueue(queueName);
+    }
 
 
 }

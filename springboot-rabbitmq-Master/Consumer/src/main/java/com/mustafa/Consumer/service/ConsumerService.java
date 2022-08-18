@@ -13,21 +13,27 @@ public class ConsumerService {
     //-----------------------------------------------------------Variables
     /*
     todo : Burada Geliştirme Yapılacak
+    todo : uygulama kuyruktan mesajı çeksin
      */
+    private Connection connection;
+    private Channel channel;
+    private Consumer consumer, consumer1, consumer2, consumer3;
+    private String messageFromQueue;
+    public static String QUEUE_NAME = "direct-queue";
     public static String QUEUE_NAME_1 = "direct-queue-1";
     public static String QUEUE_NAME_2 = "direct-queue-2";
     public static String QUEUE_NAME_3 = "direct-queue-3";
 
-    //-----------------------------------------------------------Methods
+    //-----------------------------------------------------------Methods for consumer[1,2,3]
     public void receive() throws IOException, TimeoutException {
 
-        Connection connection = ConsumerService.getConnection();
+        connection = ConsumerService.getConnection();
 
         if (connection != null) {
-            Channel channel = connection.createChannel();
+            channel = connection.createChannel();
 
             //Consumer reading from queue 1
-            Consumer consumer1 = new DefaultConsumer(channel) {
+            consumer1 = new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     String message = new String(body, "UTF-8");
@@ -37,7 +43,7 @@ public class ConsumerService {
             channel.basicConsume(QUEUE_NAME_1, true, consumer1);
 
             //Consumer reading from queue 2
-            Consumer consumer2 = new DefaultConsumer(channel) {
+            consumer2 = new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     String message = new String(body, "UTF-8");
@@ -47,7 +53,7 @@ public class ConsumerService {
             channel.basicConsume(QUEUE_NAME_2, true, consumer2);
 
             //Consumer reading from queue 3
-            Consumer consumer3 = new DefaultConsumer(channel) {
+            consumer3 = new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     String message = new String(body, "UTF-8");
@@ -61,6 +67,55 @@ public class ConsumerService {
         }
 
     }
+
+
+    public String startConsumerForThisQueue(String queueName) throws IOException, TimeoutException {
+
+        connection = ConsumerService.getConnection();
+
+        if (connection != null) {
+            channel = connection.createChannel();
+            consumer = new DefaultConsumer(channel) {
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                    String message = new String(body, "UTF-8");
+                    System.out.println("Messaj " + queueName + " kuyruğundan " + "ulaştı, Mesaj içeriği : '" + message + "'");
+                    messageFromQueue = "Messaj " + queueName + " kuyruğundan çekilen son mesaj" + "ulaştı, Son Mesaj içeriği : '" + message + "'";
+                }
+            };
+            channel.basicConsume(queueName, true, consumer);
+            channel.close();
+            connection.close();
+        }
+        return messageFromQueue ;
+    }
+
+    //"direct-queue" kuyruğu mevcut olmalıdır. Sadece o kuyruğa atılan mesajları çekecek.
+    public void receiveConsumer() throws IOException, TimeoutException{
+        connection = ConsumerService.getConnection();
+
+        if(connection != null){
+            channel = connection.createChannel();
+            //Consumer reading from queue
+            consumer = new DefaultConsumer(channel){
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException{
+                    String message = new String(body, "UTF-8");
+                    System.out.println("Message Received Queue '"+ message + "'");
+                }
+            };
+            channel.basicConsume(QUEUE_NAME, true, consumer);
+            channel.close();
+            connection.close();
+
+        }
+
+    }
+
+
+
+
+
 
     //-----------------------------------------------------------Connection Method
     public static Connection getConnection() throws IOException, TimeoutException {
@@ -78,4 +133,5 @@ public class ConsumerService {
         return connection;
 
     }
+
 }
