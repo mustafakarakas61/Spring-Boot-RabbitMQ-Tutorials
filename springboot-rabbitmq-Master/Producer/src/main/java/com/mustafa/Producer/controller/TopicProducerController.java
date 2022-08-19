@@ -23,7 +23,7 @@ public class TopicProducerController {
         producerService.createExchangeAndQueue();
     }
 
-    @PostMapping("producer")
+    @PostMapping("topicProducer")
     public void producer() throws IOException, TimeoutException {
         producerService.publish();
     }

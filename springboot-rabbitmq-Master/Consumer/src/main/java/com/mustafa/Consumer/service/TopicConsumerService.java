@@ -1,5 +1,6 @@
 package com.mustafa.Consumer.service;
 
+import com.mustafa.Consumer.config.ConnectionConfig;
 import com.rabbitmq.client.*;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class TopicConsumerService {
 
     public void receive() throws IOException, TimeoutException {
 
-        connection = getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if(connection != null) {
             channel = connection.createChannel();
@@ -62,21 +63,4 @@ public class TopicConsumerService {
     }
 
 
-
-    //-----------------------------------------------------------Connection Method
-    public static Connection getConnection() throws IOException, TimeoutException {
-
-        Connection connection;
-        ConnectionFactory factory = new ConnectionFactory();
-        //factory.setUsername("");
-        //factory.setPassword("");
-        //factory.setVirtualHost("");
-        factory.setHost("localhost");
-        //factory.setPort(15672);
-        //Bu değerleri default çekiyor
-
-        connection = factory.newConnection();
-        return connection;
-
-    }
 }

@@ -1,5 +1,6 @@
 package com.mustafa.Producer.service;
 
+import com.mustafa.Producer.config.ConnectionConfig;
 import com.mustafa.Producer.model.enums.ExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -35,55 +36,60 @@ public class TopicProducerService {
     public static String ROUTING_KEY_3 = "asia.china.beijing";
 
     public void createExchangeAndQueue() throws IOException, TimeoutException {
-        connection = getConnection();
-        channel = connection.createChannel();
-        channel.exchangeDeclare(EXCHANGE_NAME_TOPIC, ExchangeType.TOPIC.getExchangeName(), true);
+        connection = ConnectionConfig.getConnection();
 
-        //First Queue
-        channel.queueDeclare(QUEUE_NAME_1, true, false, false, null);
-        channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME_TOPIC, ROUTING_PATTERN_1);
+        if (connection != null) {
+            channel = connection.createChannel();
+            channel.exchangeDeclare(EXCHANGE_NAME_TOPIC, ExchangeType.TOPIC.getExchangeName(), true);
 
-        //Second Queue
-        channel.queueDeclare(QUEUE_NAME_2, true,false,false,null);
-        channel.queueBind(QUEUE_NAME_2,EXCHANGE_NAME_TOPIC, ROUTING_PATTERN_2);
+            //First Queue
+            channel.queueDeclare(QUEUE_NAME_1, true, false, false, null);
+            channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME_TOPIC, ROUTING_PATTERN_1);
 
-        //Third Queue
-        channel.queueDeclare(QUEUE_NAME_3, true, false, false, null);
-        channel.queueBind(QUEUE_NAME_3, EXCHANGE_NAME_TOPIC, ROUTING_PATTERN_3);
+            //Second Queue
+            channel.queueDeclare(QUEUE_NAME_2, true, false, false, null);
+            channel.queueBind(QUEUE_NAME_2, EXCHANGE_NAME_TOPIC, ROUTING_PATTERN_2);
 
-        channel.close();
-        connection.close();
+            //Third Queue
+            channel.queueDeclare(QUEUE_NAME_3, true, false, false, null);
+            channel.queueBind(QUEUE_NAME_3, EXCHANGE_NAME_TOPIC, ROUTING_PATTERN_3);
+
+            channel.close();
+            connection.close();
+        }
     }
 
     /**
-     *“First Topic Message Example” with routing key as “asia.china.nanjing“.
-     *“Second Topic Message Example” with routing key as “asia.china“.
-     *“Third Topic Message Example” with routing key as “asia.china.beijing“.
+     * “First Topic Message Example” with routing key as “asia.china.nanjing“.
+     * “Second Topic Message Example” with routing key as “asia.china“.
+     * “Third Topic Message Example” with routing key as “asia.china.beijing“.
      */
     public void publish() throws IOException, TimeoutException {
-        connection = getConnection();
-        channel = connection.createChannel();
+        connection = ConnectionConfig.getConnection();
+        if (connection != null) {
+            channel = connection.createChannel();
 
-        //First message sent by using ROUTING_KEY_1
-        channel.basicPublish(EXCHANGE_NAME_TOPIC, ROUTING_KEY_1, null, MESSAGE_1.getBytes());
-        System.out.println("Messagee Sent '"+MESSAGE_1+"'");
+            //First message sent by using ROUTING_KEY_1
+            channel.basicPublish(EXCHANGE_NAME_TOPIC, ROUTING_KEY_1, null, MESSAGE_1.getBytes());
+            System.out.println("Messagee Sent '" + MESSAGE_1 + "'");
 
-        //Second message sent by using ROUTING_KEY_2
-        channel.basicPublish(EXCHANGE_NAME_TOPIC, ROUTING_KEY_2, null, MESSAGE_2.getBytes());
-        System.out.println("Message Sent '"+MESSAGE_2+"'");
+            //Second message sent by using ROUTING_KEY_2
+            channel.basicPublish(EXCHANGE_NAME_TOPIC, ROUTING_KEY_2, null, MESSAGE_2.getBytes());
+            System.out.println("Message Sent '" + MESSAGE_2 + "'");
 
-        //Third message sent by using ROUTING_KEY_3
-        channel.basicPublish(EXCHANGE_NAME_TOPIC, ROUTING_KEY_3, null, MESSAGE_3.getBytes());
-        System.out.println("Message Sent '"+MESSAGE_3+"'");
+            //Third message sent by using ROUTING_KEY_3
+            channel.basicPublish(EXCHANGE_NAME_TOPIC, ROUTING_KEY_3, null, MESSAGE_3.getBytes());
+            System.out.println("Message Sent '" + MESSAGE_3 + "'");
 
-        channel.close();
-        connection.close();
+            channel.close();
+            connection.close();
+        }
     }
 
     public void createQueue(String queueName, String existExchangeName, String routingPatternName) throws IOException, TimeoutException {
-        connection = getConnection();
+        connection = ConnectionConfig.getConnection();
 
-        if(connection != null){
+        if (connection != null) {
             channel = connection.createChannel();
 
             channel.queueDeclare(queueName, true, false, false, null);//create queue - Kuyruk üret
@@ -94,47 +100,31 @@ public class TopicProducerService {
         }
 
     }
-    /**Bu sadece normal bir kuyruk üretmek için, Yukarıda ise kuyruk üretip buna exchange tipini ve routingPattern veriyoruz ve bunları bind ediyoruz
-    public void createQueue(String queueName) throws IOException, TimeoutException {
-        connection = DirectProducerService.getConnection();
 
-
-        if (connection != null) {
-            channel = connection.createChannel();
-            channel.queueDeclare(queueName, true, false, false, null);
-            channel.close();
-            connection.close();
-        }
-    }
-    */
+    /**
+     * Bu sadece normal bir kuyruk üretmek için, Yukarıda ise kuyruk üretip buna exchange tipini ve routingPattern veriyoruz ve bunları bind ediyoruz
+     * public void createQueue(String queueName) throws IOException, TimeoutException {
+     * connection = DirectProducerService.getConnection();
+     * <p>
+     * <p>
+     * if (connection != null) {
+     * channel = connection.createChannel();
+     * channel.queueDeclare(queueName, true, false, false, null);
+     * channel.close();
+     * connection.close();
+     * }
+     * }
+     */
 
     public void sendMessage(String newMessage, String newRoutingKeyName, String existExchangeName) throws IOException, TimeoutException {
-        connection = getConnection();
+        connection = ConnectionConfig.getConnection();
 
-        if(connection != null) {
+        if (connection != null) {
             channel = connection.createChannel();
             channel.basicPublish(existExchangeName, newRoutingKeyName, null, newMessage.getBytes());
 
             channel.close();
             connection.close();
         }
-    }
-
-
-    //---------------------------------------------------------------------Connection Config
-    public static Connection getConnection() throws IOException, TimeoutException {
-
-        Connection connection;
-        ConnectionFactory factory = new ConnectionFactory();
-        //factory.setUsername("");
-        //factory.setPassword("");
-        //factory.setVirtualHost("");
-        factory.setHost("localhost");
-        //factory.setPort(15672);
-        //Bu değerleri default çekiyor
-
-        connection = factory.newConnection();
-        return connection;
-
     }
 }

@@ -1,5 +1,6 @@
 package com.mustafa.Producer.service;
 
+import com.mustafa.Producer.config.ConnectionConfig;
 import com.mustafa.Producer.model.enums.ExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -33,7 +34,7 @@ public class ProducerService {
     //-------------------------------------------------------createEXCHANGEandQUEUE and PUBLISH METHOD
     public void createExchangeAndQueue() throws IOException, TimeoutException {
 
-        connection = ProducerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -67,7 +68,7 @@ public class ProducerService {
      * “MESSAGE_3” with routing key as “direct-key-3“.
      */
     public void publish() throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -91,7 +92,7 @@ public class ProducerService {
     }
 
     public void publish(String message, String routing_key) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -111,26 +112,9 @@ public class ProducerService {
     todo : Var olan queue'leri ve routing_key'leri yakalayıp diziye aktarabiliyor musun? Eğer yapılabiliyorsa kullanıcı bunlar arasından swagger üzerinden seçsin. Bu işlem kullanıcıya kolaylık sağlayacaktır.
     todo : Kullanıcı EXCHANGE tipini seçebilsin. Direct-Fanout-Topic-Headers. Belki bunu swagger üzerinden 1-2-3-4 gibi id numaralandırmasıyla yapılabilir.
      */
-    //---------------------------------------------------------------------Connection Config
-    public static Connection getConnection() throws IOException, TimeoutException {
-
-        Connection connection;
-        ConnectionFactory factory = new ConnectionFactory();
-        //factory.setUsername("");
-        //factory.setPassword("");
-        //factory.setVirtualHost("");
-        factory.setHost("localhost");
-        //factory.setPort(15672);
-        //Bu değerleri default çekiyor
-
-        connection = factory.newConnection();
-        return connection;
-
-    }
 
     public void sendMessage(String newMessage, String newRoutingKeyName, String existExchangeName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
-
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -140,8 +124,7 @@ public class ProducerService {
         }
     }
     public void sendMessage(String newMessage, String existExchangeName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
-
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -154,8 +137,7 @@ public class ProducerService {
 
     //---------------------------------------------------------------------Create Queue
     public void createQueue(String queueName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
-
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -166,7 +148,7 @@ public class ProducerService {
     }
 
     public void createQueue(String queueName, String existExchangeName, String routingKeyName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -180,7 +162,7 @@ public class ProducerService {
     }
 //Burada kuyruk sadece exchange'e bağlanıyor-bind ediliyor
     public void createQueue(String queueName, String existExchangeName) throws IOException, TimeoutException {
-        connection = ProducerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -195,7 +177,7 @@ public class ProducerService {
 
         //---------------------------------------------------------------------Create Exchange
         public void createExchangeDirect (String exchangeName) throws IOException, TimeoutException {
-            connection = ProducerService.getConnection();
+            connection = ConnectionConfig.getConnection();
 
 
             if (connection != null) {
@@ -207,7 +189,7 @@ public class ProducerService {
         }
 
         public void createExchangeFanout (String exchangeName) throws IOException, TimeoutException {
-            connection = ProducerService.getConnection();
+            connection = ConnectionConfig.getConnection();
 
 
             if (connection != null) {
@@ -219,7 +201,7 @@ public class ProducerService {
         }
 
         public void createExchangeHeader (String exchangeName) throws IOException, TimeoutException {
-            connection = ProducerService.getConnection();
+            connection = ConnectionConfig.getConnection();
 
 
             if (connection != null) {
@@ -231,7 +213,7 @@ public class ProducerService {
         }
 
         public void createExchangeTopic (String exchangeName) throws IOException, TimeoutException {
-            connection = ProducerService.getConnection();
+            connection = ConnectionConfig.getConnection();
 
 
             if (connection != null) {

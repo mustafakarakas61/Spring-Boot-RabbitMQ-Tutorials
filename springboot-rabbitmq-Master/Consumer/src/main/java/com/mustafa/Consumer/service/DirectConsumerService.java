@@ -1,5 +1,6 @@
 package com.mustafa.Consumer.service;
 
+import com.mustafa.Consumer.config.ConnectionConfig;
 import com.rabbitmq.client.*;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class DirectConsumerService {
     //-----------------------------------------------------------Methods for consumer[1,2,3]
     public void receive() throws IOException, TimeoutException {
 
-        connection = DirectConsumerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -70,7 +71,7 @@ public class DirectConsumerService {
 
     public String startConsumerForThisQueue(String queueName) throws IOException, TimeoutException {
 
-        connection = DirectConsumerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if (connection != null) {
             channel = connection.createChannel();
@@ -91,7 +92,7 @@ public class DirectConsumerService {
 
     //"direct-queue" kuyruğu mevcut olmalıdır. Sadece o kuyruğa atılan mesajları çekecek.
     public void receiveConsumer() throws IOException, TimeoutException{
-        connection = DirectConsumerService.getConnection();
+        connection = ConnectionConfig.getConnection();
 
         if(connection != null){
             channel = connection.createChannel();
@@ -111,26 +112,5 @@ public class DirectConsumerService {
 
     }
 
-
-
-
-
-
-    //-----------------------------------------------------------Connection Method
-    public static Connection getConnection() throws IOException, TimeoutException {
-
-        Connection connection;
-        ConnectionFactory factory = new ConnectionFactory();
-        //factory.setUsername("");
-        //factory.setPassword("");
-        //factory.setVirtualHost("");
-        factory.setHost("localhost");
-        //factory.setPort(15672);
-        //Bu değerleri default çekiyor
-
-        connection = factory.newConnection();
-        return connection;
-
-    }
 
 }
